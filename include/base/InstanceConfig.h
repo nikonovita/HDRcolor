@@ -23,7 +23,7 @@ public:
 	bool upgradeDB(QJsonObject& dbConfig);
 	bool saveSettings(QJsonObject config, bool correct = false);
 	QJsonDocument getSetting(settings::type type) const;
-	void saveSetting(settings::type key, QString saveData);
+	bool saveSetting(settings::type key, QString saveData);
 	QJsonObject getSettings() const;
 	bool isReadOnlyMode();
 signals:

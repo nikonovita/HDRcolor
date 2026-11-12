@@ -10,7 +10,7 @@
 		"subcommand": {
 			"type" : "string",
 			"required" : true,
-			"enum" : ["setconfig","getconfig","getschema"]
+			"enum" : ["setconfig","getconfig","getschema","save-adjustment"]
 		},
 		"tan" : {
 			"type" : "integer"

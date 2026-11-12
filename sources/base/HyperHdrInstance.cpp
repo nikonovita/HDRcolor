@@ -319,12 +319,33 @@ QJsonDocument HyperHdrInstance::getSetting(settings::type type) const
 
 void HyperHdrInstance::setSetting(settings::type type, QString config)
 {
-	return _instanceConfig->saveSetting(type, config);
+	_instanceConfig->saveSetting(type, config);
 }
 
 bool HyperHdrInstance::saveSettings(const QJsonObject& config, bool correct)
 {
 	return _instanceConfig->saveSettings(config, correct);
+}
+
+QJsonObject HyperHdrInstance::saveLiveAdjustment()
+{
+	if (getReadOnlyMode())
+		return {};
+
+	const QJsonArray adjustment = _infinite->getCurrentProcessingConfig();
+	QJsonObject color = getSetting(settings::type::COLOR).object();
+	if (color.isEmpty() || adjustment.isEmpty() || adjustment.first().toObject().isEmpty())
+		return {};
+
+	if (color["channelAdjustment"].toArray() == adjustment)
+		return color;
+
+	color["channelAdjustment"] = adjustment;
+	const QString data = QString::fromUtf8(QJsonDocument(color).toJson(QJsonDocument::Compact));
+	if (!_instanceConfig->saveSetting(settings::type::COLOR, data))
+		return {};
+
+	return color;
 }
 
 void HyperHdrInstance::saveCalibration(QString saveData)

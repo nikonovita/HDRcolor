@@ -177,10 +177,11 @@ $(document).ready(function () {
 		window.showOptHelp = window.serverConfig.general.showOptHelp;
 	});
 
-	$(window.hyperhdr).on("cmd-config-setconfig cmd-instance-saveName cmd-instance-deleteInstance cmd-instance-createInstance", function (event) {
+	$(window.hyperhdr).on("cmd-config-setconfig cmd-config-save-adjustment cmd-instance-saveName cmd-instance-deleteInstance cmd-instance-createInstance", function (event) {
 		if (event.response.success === true)
 		{
-			var timeout = (event.type == "cmd-config-setconfig") ? 0 : 500;
+			if (event.type == "cmd-config-save-adjustment")
+				window.serverConfig.color = event.response.info;
 			toaster('success', $.i18n("dashboard_alert_message_confsave_success_t"), $.i18n("dashboard_alert_message_confsave_success"), 0);
 		}
 	});

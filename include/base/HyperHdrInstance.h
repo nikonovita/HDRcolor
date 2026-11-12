@@ -80,6 +80,7 @@ public slots:
 	QJsonObject getJsonInfo(bool full);
 	void registerInput(int priority, hyperhdr::Components component, const QString& origin = "System", const QString& owner = "", unsigned smooth_cfg = 0);
 	void saveCalibration(QString saveData);
+	QJsonObject saveLiveAdjustment();
 	bool saveSettings(const QJsonObject& config, bool correct = false);
 	void setSignalStateByCEC(bool enable);
 	bool setInputLeds(int priority, const QVector<ColorRgb>& ledColors, int timeout_ms = -1, bool clearEffect = true);
