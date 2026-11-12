@@ -774,6 +774,27 @@ void HyperAPI::handleConfigCommand(const QJsonObject& message, const QString& co
 		else
 			sendErrorReply("No Authorization", command, tan);
 	}
+	else if (subcommand == "save-adjustment")
+	{
+		if (!_adminAuthorized)
+		{
+			sendErrorReply("No Authorization", full_command, tan);
+			return;
+		}
+
+		if (!BaseAPI::isHyperhdrEnabled())
+		{
+			sendErrorReply("Saving configuration while HyperHDR is disabled isn't possible", full_command, tan);
+			return;
+		}
+
+		QJsonObject color;
+		SAFE_CALL_0_RET(_hyperhdr.get(), saveLiveAdjustment, QJsonObject, color);
+		if (color.isEmpty())
+			sendErrorReply("Save settings failed", full_command, tan);
+		else
+			sendSuccessDataReply(QJsonDocument(color), full_command, tan);
+	}
 	else if (subcommand == "getconfig")
 	{
 		if (_adminAuthorized)

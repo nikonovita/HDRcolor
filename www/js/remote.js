@@ -86,6 +86,13 @@ $(document).ready(function()
 		color              : window.schema.color.properties.channelAdjustment.items
 	}, true, true);	
 	
+	const saveLiveAdjustment = $("#save_live_adjustment");
+	saveLiveAdjustment.prop("disabled", !!window.readOnlyMode);
+	saveLiveAdjustment.on("click", function()
+	{
+		sendToHyperhdr("config", "save-adjustment");
+	});
+
 	function BindColorCalibration()
 	{
 		for(var key in window.schema.color.properties.channelAdjustment.items.properties)

@@ -330,14 +330,14 @@ bool InstanceConfig::saveSettings(QJsonObject config, bool correct)
 	return rc;
 }
 
-void InstanceConfig::saveSetting(settings::type key, QString saveData)
+bool InstanceConfig::saveSetting(settings::type key, QString saveData)
 {
 	if (!_sTable->createSettingsRecord(settings::typeToString(key), saveData))
 	{
 		Error(_log, "Could not save the config: {:s} = {:s}", (settings::typeToString(key)), (saveData));
+		return false;
 	}
-	else
-	{
-		emit SignalInstanceSettingsChanged(key, QJsonDocument::fromJson(saveData.toUtf8()));
-	}
+
+	emit SignalInstanceSettingsChanged(key, QJsonDocument::fromJson(saveData.toUtf8()));
+	return true;
 }
